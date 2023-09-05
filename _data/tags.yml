@@ -1,16 +1,12 @@
-speeches:
-  name: speeches
-  description: Some of the greatest words ever spoken.
-  cover: assets/images/speeches.jpg
-fiction:
-  name: fiction
-  description: False
-  cover: False
-fables:
-  name: fables
-  description: A series of short stories that make you think.
-  cover: assets/images/fables.jpg
-getting-started:
-  name: getting-started
-  description: False
-  cover: False
+development:
+  name: development
+  description: Some interesting stuff I had to work on
+  cover: assets/images/development.jpg
+java:
+  name: java
+  description: Posts about java programming language
+  cover: assets/images/Java_logo.png
+system:
+  name: system
+  description: System engineering posts
+  cover: assets/images/Mechanical-Gears.jpg

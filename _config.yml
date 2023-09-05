@@ -6,11 +6,11 @@ language: 'en-uk'
 words_per_minute: 200
 
 # edit baseurl to simply '/' if using as your personal page (instead of a project page)
-baseurl: /jasper2/
+baseurl: /
 
 # Website info
-title: Ghost
-description: The professional publishing platform
+title: Özgün ÖZ
+description: Fullstack Developer, Msc. Computer Engineer
 cover: assets/images/blog-cover.jpg
 logo: assets/images/blog-icon.png
 logo_dark: assets/images/favicon.png
@@ -24,13 +24,14 @@ subscribers: True # you need to connect an external service for this to work,
 # by editing `_includes/subscribe-form.html`
 twitter: tryghost # replace by your username
 facebook: ghost # replace by your username
+github: homeofthewizard
 
 # Disqus
-disqus: False
-disqus_shortname: jekyllt # replace with your disqus username
+disqus: True
+disqus_shortname: HomeOfTheWizard # replace with your disqus username
 
 # Google Analytics
-google_analytics: UA-69281367-1 # replace with your GA tracking identifier
+google_analytics: G-W7BHPYN5QX # replace with your GA tracking identifier
 
 # Permalinks
 permalink: /:title
@@ -67,13 +68,13 @@ feed:
 # or "master" otherwise
 safe: False
 lsi: False
-username: jekyllt
-repo: jasper2
-branch: master
+username: homeofthewizard
+repo: homeofthewizard.github.io
+branch: main
 relative_source: ../jasper2/
-destination: ../jasper2-pages/
-production_url:  https://jekyllt.github.io/jasper2/
-source_url:  https://github.com/jekyllt/jasper2/
+destination: ./_site
+production_url:  https://homeofthewizard.github.io/
+source_url:  https://github.com/homeofthewizard/homeofthewizard.github.io/
 
 exclude:
   - assets/css
