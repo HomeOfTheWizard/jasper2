@@ -2213,3 +2213,19 @@ body {
     border: 1px solid #bbb
 }
 /*# sourceMappingURL=screen.css.map */
+
+.alert {
+    padding: 20px;
+    background-color: #fda9a3; /* Red */
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #fd786f;
+}
+
+.important {
+    padding: 20px;
+    background-color: lightsteelblue;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid darkblue;
+}
