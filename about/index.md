@@ -52,7 +52,7 @@ navigation: True
             A maven plugin that allows developpers fetch secrets used in application configurations from Hashicorp Vault to their local test/development environments.
         </li>
         <li>
-            <strong><a target="_blank" href="https://homeofthewizard.github.io/spring-bridge-maven-plugin/">Spring-Bridge-Maven Plugin</a></strong>
+            <strong><a target="_blank" href="https://github.com/HomeOfTheWizard/spring-bridge-maven-plugin">Spring-Bridge-Maven Plugin</a></strong>
             <span class="techno-pill">Java</span>
             <span class="techno-pill">Maven</span>
             <span class="techno-pill">Spring</span>

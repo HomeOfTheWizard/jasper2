@@ -14,7 +14,7 @@ Deep dive into maven's internals to help the development of plugins
 
 This will be probably the first post of a series about how maven works and how to contribute to its ecosystem.  
 In this post, I will talk about the core components and internal mechanism of maven that developers should know if they want to develop plugins.
-While developing my first plugins I have had a hard time to find all information in details in the documentations. I even ended up contributing to the maven documentations.
+While developing my first plugins I have had a hard time to find all information in details in the documentation. I even ended up contributing to the maven documentation.
 So the idea here is to give you important headlines and an introduction to the core features, and pointing you to detailed documentation links if you want to go further.
 
 # Quick reminder
@@ -24,11 +24,11 @@ You probably used a few of its plugins. Failsafe and Surefire plugins are most c
 But Maven is actually conceived with a plugin based architecture. Meaning everything you do with maven is running plugin.  
 Even the basic commands you use, like `mvn clean install` are actually using `clean` and `install` plugins. See [here](https://maven.apache.org/plugins/index.html) for more details.
 This is what allows maven to expand its usage so easily.  
-You sometimes even use maven outside the build context, on your CI or deployment pipelines. `sonar-scanner` or `liquibase` plugins are good examples.
+You sometimes even use maven outside the build context, on your CI or deployment pipelines. [sonar-scanner](https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-maven/) or [liquibase](https://docs.liquibase.com/tools-integrations/maven/home.html) plugins are good examples.
 
 If you want to develop your own plugin to add new features to maven and use it on your CI or deployment pipelines, the official [documentation](https://maven.apache.org/plugin-developers/index.html) is always a good start.
 You might find some pages out of date. Maven is an open sourced project developed mainly by the community. While writing this post, I am also trying to update it. Please do the same.
-Also please have a look [here](https://maven.apache.org/plugin-developers/common-bugs.html), so you do not fell into common errors when starting with maven.
+Also please have a look [here](https://maven.apache.org/plugin-developers/common-bugs.html), so you do not fall into common errors when starting with maven.
 
 
 ## How Maven works ?
@@ -165,6 +165,8 @@ The **Model** is basically your model for Maven POM (Project Object Model), wher
 
 The **SISU** components is where we manage the dependency injection of objects in maven plugins/extensions. It a crucial components in the plugin system, 
 and we must understand how it works in case we are building extensions. 
+
+The **Wagon Provider API** defines a unified [API](https://maven.apache.org/wagon/wagon-provider-api/), for a [transport abstraction](https://maven.apache.org/wagon/index.html) that is used in Maven's artifact and repository handling code.
 
 
 ## 2. Maven Classloader system
@@ -350,16 +352,16 @@ Hope that helps you in your journey. Next post will probably be on the maven cor
 
 <h1>Appendix: References</h1>
 
-https://maven.apache.org/what-is-maven.html
-https://maven.apache.org/plugins/index.html
-https://maven.apache.org/plugin-developers/index.html
-https://maven.apache.org/plugin-developers/common-bugs.html
-https://en.wikipedia.org/wiki/Java_Classloader
-https://maven.apache.org/guides/mini/guide-maven-classloading.html#Core_Classloader
-http://takari.io/book/91-maven-classloading.html
-https://cwiki.apache.org/confluence/display/MAVEN/Maven+3.x+Class+Loading
-https://eclipse.github.io/sisu.plexus/
-https://developer.okta.com/blog/2019/09/23/tutorial-build-a-maven-plugin
-https://maven.apache.org/guides/mini/guide-using-extensions.html
+https://maven.apache.org/what-is-maven.html  
+https://maven.apache.org/plugins/index.html  
+https://maven.apache.org/plugin-developers/index.html  
+https://maven.apache.org/plugin-developers/common-bugs.html  
+https://en.wikipedia.org/wiki/Java_Classloader  
+https://maven.apache.org/guides/mini/guide-maven-classloading.html#Core_Classloader  
+http://takari.io/book/91-maven-classloading.html  
+https://cwiki.apache.org/confluence/display/MAVEN/Maven+3.x+Class+Loading  
+https://eclipse.github.io/sisu.plexus/  
+https://developer.okta.com/blog/2019/09/23/tutorial-build-a-maven-plugin  
+https://maven.apache.org/guides/mini/guide-using-extensions.html  
  
 
