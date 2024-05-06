@@ -247,7 +247,8 @@ Kubernetes has even a HashiCorp Vault [plugin](https://www.vaultproject.io/use-c
 <p><img src="../assets/images/hashicorp_jenkins_kubernetes.png"/></p>
 
 Plus, this option has the advantage of being able to put all the configurations related to your application to version control (recommended by the [7 factor config](https://7factorconfig.org/)).
-The only thing to manage in the execution environment is the credentials to access to Vault.
+The only thing to manage in the execution environment is the credentials to access to Vault. Vault has several different integration tools with K8s, each having their pros and cons, discussed [here](https://www.hashicorp.com/blog/kubernetes-vault-integration-via-sidecar-agent-injector-vs-csi-provider). 
+
 
 <h3> Secrets injected directly into the JVM from Secret Manager </h3>
 If we compare the above methods:  
@@ -258,7 +259,6 @@ For example we have to use specific plugins/tools/agents to each environment to 
 Frameworks like [spring-cloud-vault](https://cloud.spring.io/spring-cloud-vault/reference/html/) or tools like [maven-vault-plugin](https://homeofthewizard.github.io/vault-maven-plugin/) allows the JVM to fetch the secrets directly from the HashiCorp Vault.  
 They are pure Java solutions, so you do not have to install anything specific to the execution environment, so can be used even in development environments.  
 Plus your secrets are not persisted anywhere, but exists only in memory of your application.
-
 
 
 <h1> Appendix: References </h1>

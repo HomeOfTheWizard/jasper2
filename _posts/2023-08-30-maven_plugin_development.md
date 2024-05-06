@@ -151,6 +151,8 @@ The **Distribution** is the full package we get when we download maven executabl
 The **Core** component is where we implement all the maven lifecycle and phase logic.
 It interacts with the other components to get the information necessary to build the lifecycles (maven and project settings, plugin settings ect.).  
 This is also where we have the Class Loader hierarchy and extensions setup for the maven lifecycles execution, which we will dig deeper further in this article.
+The Core component is also contains an important subcomponent of maven that help us manage multi-module projects, the [maven reactor](https://maven.apache.org/guides/mini/guide-multiple-modules.html).
+Major improvements are done in this component in [maven 4](https://maven.apache.org/docs/4.0.0-alpha-4/release-notes.html).
 
 The **PluginAPI** is basically where we make the interface between the maven lifecycles and the goals to execute from the plugins. We are going to use this API to code our plugins so maven can use them.
 The [core](https://maven.apache.org/ref/3.9.6/maven-core/index.html) component on the schema is the main application that will manage everything necessary for the build process defined in your pom.xml.  
