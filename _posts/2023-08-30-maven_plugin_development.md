@@ -12,9 +12,11 @@ author: oz
 ---
 Deep dive into maven's internals to help the development of plugins
 
-This will be probably the first post of a series about how maven works and how to contribute to its ecosystem.  
-In this post, I will talk about the core components and internal mechanism of maven that developers should know if they want to develop plugins.
-While developing my first plugins I have had a hard time to find all information in details in the documentation. I even ended up contributing to the maven documentation.
+This will be probably the first post of a series about how maven works and how to contribute to its ecosystem. 
+In this post, I will talk about the core components and internal mechanism of maven that developers should know if they want to develop plugins.  
+There are dozens of articles on the web that explains how to develop and use new custom maven plugins, like this [one](https://developer.okta.com/blog/2019/09/23/tutorial-build-a-maven-plugin). 
+But if you want to go deeper and understand first the internals of maven, the best available source is the official documentation which is very detailed and technical, and scattered all around. 
+While developing my first plugins I have had a hard time to gather a big picture. 
 So the idea here is to give you important headlines and an introduction to the core features, and pointing you to detailed documentation links if you want to go further.
 
 # Quick reminder
@@ -142,7 +144,7 @@ exec "$JAVACMD" \
 
 Without digging in too much details here, I will point you to the official documentation if you want further details.
 The following [documentation](https://maven.apache.org/ref/3.9.6/) shows in details its internal components.  
-<p><img src="../assets/images/maven.drawio.png"/></p>
+<p><img src="../assets/images/maven-architecture.drawio.png"/></p>
 This is highly simplified version that shows only the main components that we will talk about.
 The <b style="color:steelblue">blue</b> boxes are the maven components and the <b style="color:sandybrown">orange</b> ones are external libraries used by maven. 
 

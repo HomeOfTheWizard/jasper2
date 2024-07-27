@@ -59,6 +59,14 @@ navigation: True
             <br />
             A maven plugin that allows using Spring libraries during the development of other Maven plugins.
         </li>
+        <li>
+            <strong><a target="_blank" href="https://github.com/HomeOfTheWizard/spring-bridge-maven">Spring-Bridge-Maven Library</a></strong>
+            <span class="techno-pill">Java</span>
+            <span class="techno-pill">Maven</span>
+            <span class="techno-pill">Spring</span>
+            <br />
+            A Library that allows using Spring libraries during the development of other Maven plugins. Based on <a target="_blank" href="https://github.com/spring-projects/spring-guice">Spring-Guice</a>
+        </li>
     </ul>
 
     <h2 id="photographie">My personal life with all its drama</h2>
