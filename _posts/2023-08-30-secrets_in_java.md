@@ -206,21 +206,25 @@ If we take those words and analyse the literal meanings outside the scope of pro
 
 <h1> Secrets ?</h1>
 Now lets get back to the focus element of this post. The credentials in our configuration, aka. secrets.
-
 There are different methods to give secret values as parameters to an application.
-The most basic and old way, is to have the credentials stored in a configuration file, located only on a server we consider secure, and we limit all access to it. Like the production server.
-For applications that run on bare metal or VMs, this is most often the chosen method.
 
-Just to give a glimpse of some best practices used today without diving into too much details since it is not the subject of this blog post,
+<h3> Basic and old way </h3>
+Is to have the credentials stored in a configuration file, located only on a server we consider secure, and we limit all access to it. Like the production server.
+For applications that run directly on bare metal or VMs without orchestration, this is most often the chosen method.
+
+Just to give a glimpse of best practices used on non containerized environments, without diving into too much details since they are less and less used in modern systems,
 if you are using deployment tools like ansible, you can profit from features like [Ansible Vault](https://docs.ansible.com/ansible/latest/vault_guide).
 
 <p><img src="../assets/images/hashicorp_ansible_jenkins_vm.png"/></p>
 
-It allows you to encrypt them with a key so your secret file that is encrypted may even be pushed on version control.
+Ansible vault allows you to encrypt them with a key so your secret file that is encrypted may even be pushed on version control.
 It will then decrypt them on the fly during deployment.
 So only the decryption key is needed to be managed during the deployment and execution of the application.
-The encryption key is the real secret here and can be stored in your CI tool that will launch the deployments, or you can use a secret manager like [Hashicorp Vault](https://www.vaultproject.io/) to keep your secrets.
-Most CI tools, like jenkins have [plugins](https://plugins.jenkins.io/hashicorp-vault-plugin/), allowing to communicate with HashiCorp Vault to fetch your secrets during your pipeline execution instead of storing them on the CI server.
+The encryption key is the real secret here and can be stored in your CI tool that will launch the deployments, or you can use a secret manager like [Hashicorp Vault](https://www.vaultproject.io/) to keep your secrets.  
+
+Application execution environments are considered as not secure since it is a place we do regular changes. Lots of ins and outs, difficult to track and secure.
+This is why key management applications, like HashiCorp Vault has come into being. Their only purpose is to store your secrets. They also allow you to keep your secrets in a central place without copy pasting it everywhere.  
+For example most CI tools, like jenkins have [plugins](https://plugins.jenkins.io/hashicorp-vault-plugin/), allowing to communicate with HashiCorp Vault to fetch your secrets during your pipeline execution instead of storing them on the CI server.
 
 <div class="alert">
     <div markdown="span" style="margin-left: 0.7em;">
@@ -234,32 +238,55 @@ Most CI tools, like jenkins have [plugins](https://plugins.jenkins.io/hashicorp-
 </div>
 
 
-<h3> Secrets accessible to the JVM from Environment Variables </h3>
-Application execution environments are considered as not secure since it is a place we do regular changes. Lots of ins and outs, difficult to track and secure.
-This is why key management applications, like HashiCorp Vault has come into being. Their only purpose is to store your secrets.
+<h3> In containerized environments </h3>
 
-Execution environments like containers have the advantage of being ephemeral which in turns makes the fact of having the secrets accessible on the execution environment more secure. 
-Making them accessible via environment variables, instead of a config file persisted on the FS, is considered relatively more secure. 
-There are still some concerns about this approach in general ( [one](https://www.cloudtruth.com/blog/the-pitfalls-of-using-environment-variables-for-config-and-secrets) or [two](https://www.trendmicro.com/en_za/research/22/h/analyzing-hidden-danger-of-environment-variables-for-keeping-secrets.html) among other tones of discussion on platforms like stackexchange and stackoverflow, of blog posts are available on the net)
-but most known Container Execution Environment Providers like Docker and Kubernetes has components ([etcd](https://kubernetes.io/docs/concepts/configuration/secret/) for K8s) that are considered relatively secure to store the secrets for you.
-Kubernetes has even a HashiCorp Vault [plugin](https://www.vaultproject.io/use-cases/kubernetes) that allows fetching the secrets from Vault and injecting into the pods, instead of storing them in own DB (etcd).
+When we want to leverage from the advantages of containers (such as flexible scalability) we usually run multiple instances of our application. Hence, the secrets must be available to all the instances.
+Most known Container Execution Environment Providers like Docker and Kubernetes has components ([etcd](https://kubernetes.io/docs/concepts/configuration/secret/) for K8s) that are considered relatively secure to store the secrets for you, and make them available to all your instances.
+
+Kubernetes has even direct [integration](https://www.vaultproject.io/use-cases/kubernetes) with HashiCorp Vault that allows fetching the secrets from Vault and injecting into the pods, instead of storing them in own DB (etcd).
+The only thing to manage in the execution environment is the credentials to access to Vault.  
 
 <p><img src="../assets/images/hashicorp_jenkins_kubernetes.png"/></p>
 
-Plus, this option has the advantage of being able to put all the configurations related to your application to version control (recommended by the [7 factor config](https://7factorconfig.org/)).
-The only thing to manage in the execution environment is the credentials to access to Vault. Vault has several different integration tools with K8s, each having their pros and cons, discussed [here](https://www.hashicorp.com/blog/kubernetes-vault-integration-via-sidecar-agent-injector-vs-csi-provider). 
+Vault has several different integration tools with K8s, each having their pros and cons, discussed [here](https://www.hashicorp.com/blog/kubernetes-vault-integration-via-sidecar-agent-injector-vs-csi-provider).  
+The key challenge when we have multiple instances, and we want to centralize the management of the secrets in a single component (vault), is to keep the secrets used by the instances fresh and in sync with vault.  
+Another challenge is about how the application will react to and handle a secret change. This is where framework specific solutions like [spring-cloud-vault](https://cloud.spring.io/spring-cloud-vault/reference/html/) comes into play.  
+
+Now all those options also differ in an important way, which is how do they make the secrets fetched from vault available to the application.
+
+<h3> The use of secrets fetched from Secret Manager </h3>
+Tools/solutions specific to kubernetes either share the secrets in a file or as environment variable to the application.
+
+Compared to bare-metal servers or VMs, containers have the advantage of being ephemeral which in turns makes the fact of having the secrets accessible on the execution environment a bit more secure.
+Making them accessible via environment variables, instead of a config file persisted on the FS, is considered relatively more secure.
+There are still some concerns about this approach in general ( [one](https://www.cloudtruth.com/blog/the-pitfalls-of-using-environment-variables-for-config-and-secrets) or [two](https://www.trendmicro.com/en_za/research/22/h/analyzing-hidden-danger-of-environment-variables-for-keeping-secrets.html) among other tones of discussion on platforms like stackexchange and stackoverflow, of blog posts are available on the net)
+
+Another problem about making the secrets available via plain text file or environment variable, is the [castle and moat](https://www.cloudflare.com/learning/access-management/castle-and-moat-network-security/) problem.
+We can never be sure that our K8s cluster will not be accessed by an attacker. Hence, the importance of mutual TLS and emergence of zero-trust solutions like [istio](https://istio.io/latest/docs/concepts/security/).
+
+Frameworks like [spring-cloud-vault](https://cloud.spring.io/spring-cloud-vault/reference/html/) or tools like [maven-vault-plugin](https://homeofthewizard.github.io/vault-maven-plugin/) allows the JVM to fetch the secrets directly from the HashiCorp Vault. Your secrets are not persisted anywhere, but exists only in memory of your application.  
+They are pure Java solutions, so you do not have to install anything specific to the execution environment, hence can be used even in development environments.  
+Of course those solutions also have their downsides. Spring-cloud asks you to change your codebase and requires you to manage an additional config server, while vault-maven-plugin adds the overhead of a build tool to the execution of your app.
+
+<h1> Résumé </h1>
+Fist We have discussed how parameters in general are passed to a java application, as well as secrets.
+
+* Program Arguments
+* System Properties
+* Environment variables
+
+Then we have saw the importance of the usage of secret managers. Allowing us to centralise the management of our secrets and automate the integration with the different environments our application runs.
+
+Lastly we saw the different options we have when using the HashCorp vault secret manager, and pointed to the key challenges and important points to consider when choosing one.  
+
+**Final words**: There is no single solution that fits all. Every project has different requirements and priorities. So we have to consider the pros and cons of each solution to select the best for us.
+
+  
+
+Hope all that was useful for you!
 
 
-<h3> Secrets injected directly into the JVM from Secret Manager </h3>
-If we compare the above methods:  
-1. The first approach with bare metal VMs force us to handle secrets manually, while the second automates the injection of the secrets to the application runtime environment.      
-2. But the second still forces us to administrate the access to the vault from the runtime environments of our application.  
-For example we have to use specific plugins/tools/agents to each environment to access to the Vault and fetch secrets.
-
-Frameworks like [spring-cloud-vault](https://cloud.spring.io/spring-cloud-vault/reference/html/) or tools like [maven-vault-plugin](https://homeofthewizard.github.io/vault-maven-plugin/) allows the JVM to fetch the secrets directly from the HashiCorp Vault.  
-They are pure Java solutions, so you do not have to install anything specific to the execution environment, so can be used even in development environments.  
-Plus your secrets are not persisted anywhere, but exists only in memory of your application.
-
+--- 
 
 <h1> Appendix: References </h1>
 https://docs.oracle.com/javase/8/docs/technotes/tools/windows/java.html    
